@@ -1,0 +1,23 @@
+[tasks.run]
+command = "cargo"
+args = ["run"]
+env = { "RUSTFLAGS" = "-Awarnings", "RUST_LOG" = "debug" }
+watch = true
+
+[tasks.build]
+command = "cargo"
+args = ["build", "--release"]
+
+[tasks.format]
+command = "cargo"
+args = ["clippy", "--fix", "--allow-dirty"]
+
+[tasks.lint]
+command = "cargo"
+args = ["clippy"]
+
+[tasks.start]
+run_task = { name = ["run"], parallel = true }
+
+[env]
+CARGO_MAKE_EXTEND_WORKSPACE_MAKEFILE = "true"
