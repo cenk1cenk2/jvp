@@ -5,6 +5,10 @@ edition.workspace = true
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[[bin]]
+name = "jvp-api"
+path = "src/main.rs"
+
 [dependencies]
 common = { workspace = true }
 
