@@ -1,23 +1,45 @@
 [env]
 CARGO_MAKE_EXTEND_WORKSPACE_MAKEFILE = "true"
 
-[tasks.run]
-command = "cargo"
-args = ["run"]
-env = { "RUSTFLAGS" = "-Awarnings", "RUST_LOG" = "debug" }
-watch = true
+[config]
+skip_git_env_info = true
+skip_rust_env_info = true
+skip_crate_env_info = true
+default_to_workspace = false
 
 [tasks.release]
-run_task = { name = ["build-release"], parallel = true }
+run_task = { name = ["build-release"] }
+workspace = false
 
 [tasks.format]
 command = "cargo"
 args = ["clippy", "--fix", "--allow-dirty"]
+workspace = false
 
 [tasks.lint]
 command = "cargo"
 args = ["clippy"]
+workspace = false
+
+[tasks.run-api]
+env = { RUSTFLAGS = "-Awarnings", RUST_LOG = "debug" }
+command = "cargo"
+args = ["watch", "-q", "-x", "run"]
+cwd = "api"
+workspace = false
+
+[tasks.run-ms-calendar]
+env = { RUSTFLAGS = "-Awarnings", RUST_LOG = "debug" }
+command = "cargo"
+args = ["watch", "-q", "-x", "run"]
+cwd = "ms-calendar"
+workspace = false
 
 [tasks.start]
-run_task = { name = ["run"], fork = true, parallel = true }
-# workspace = false
+description = "Watch all project files, and recompile and rerun the project on change."
+workspace = false
+clear = true
+run_task = { name = [
+  "run-api",
+  "run-ms-calendar",
+], fork = true, parallel = true }
