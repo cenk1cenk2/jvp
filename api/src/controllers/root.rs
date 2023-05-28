@@ -11,7 +11,6 @@ use serde_json::Value;
 
 use std::sync::Arc;
 use tower_http::trace::{self, TraceLayer};
-use tracing::Level;
 
 use super::openapi::generate;
 

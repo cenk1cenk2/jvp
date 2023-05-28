@@ -1,3 +1,8 @@
+mod prelude;
+mod settings;
+
+use crate::prelude::*;
+
 fn main() {
-    println!("Hello, asd!");
+    logger::setup_tracing();
 }

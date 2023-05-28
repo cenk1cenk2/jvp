@@ -1,21 +1,11 @@
 [env]
 CARGO_MAKE_EXTEND_WORKSPACE_MAKEFILE = "true"
 
-[tasks.run-api]
+[tasks.run]
 command = "cargo"
 args = ["run"]
 env = { "RUSTFLAGS" = "-Awarnings", "RUST_LOG" = "debug" }
-watch = { postpone = true, watch = ["./api/"] }
-cwd = "./api"
-workspace = false
-
-[tasks.run-ms-calendar]
-command = "cargo"
-args = ["run"]
-env = { "RUSTFLAGS" = "-Awarnings", "RUST_LOG" = "debug" }
-watch = { postpone = true, watch = ["./ms_calendar/"] }
-cwd = "./ms_calendar"
-workspace = false
+watch = true
 
 [tasks.release]
 run_task = { name = ["build-release"], parallel = true }
@@ -29,8 +19,5 @@ command = "cargo"
 args = ["clippy"]
 
 [tasks.start]
-run_task = { name = [
-  "run-api",
-  "run-ms-calendar",
-], fork = true, parallel = true }
-workspace = false
+run_task = { name = ["run"], fork = true, parallel = true }
+# workspace = false

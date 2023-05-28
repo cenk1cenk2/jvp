@@ -4,12 +4,14 @@ members = ["api", "ms_calendar", "common"]
 [workspace.package]
 version = "0.1.0"
 edition = "2021"
+rust-version = "1.69.0"
 
 [workspace.dependencies]
-api = { path = "./api" }
-common = { path = "./common" }
-ms_calendar = { path = "./ms_calendar" }
+api = { path = "api" }
+common = { path = "common" }
+ms_calendar = { path = "ms_calendar" }
 
 tokio = { version = "1.24.2", features = ["full"] }
 thiserror = "1.0.40"
-config = { version = "0.13.3", features = ["toml"] }
+serde = { version = "1.0.152", features = ["derive"] }
+lapin = { version = "2.2.1", features = ["serde_json"] }

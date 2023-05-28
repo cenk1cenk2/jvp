@@ -1,12 +1,11 @@
 use std::net::SocketAddr;
 use std::sync::Arc;
-use tracing_subscriber::prelude::*;
-use tracing_subscriber::EnvFilter;
 
 mod controllers;
 mod error;
 mod prelude;
 mod response;
+mod settings;
 mod states;
 
 use crate::controllers::root::routes;
@@ -14,14 +13,7 @@ use crate::prelude::*;
 
 #[tokio::main]
 async fn main() {
-    tracing_subscriber::registry()
-        .with(tracing_subscriber::fmt::layer().compact())
-        .with(
-            EnvFilter::try_from_default_env()
-                .or_else(|_| EnvFilter::try_new("info"))
-                .unwrap(),
-        )
-        .init();
+    logger::setup_tracing();
 
     let settings = Arc::new(match Settings::new() {
         Ok(config) => config,
