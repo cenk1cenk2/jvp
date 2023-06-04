@@ -7,6 +7,8 @@ use axum::{
     http::{Method, StatusCode},
 };
 use axum::{Extension, Json, Router};
+use common::rmq::client::RmqRpcClient;
+use common::rmq::pool::create_rmq_pool;
 use serde_json::Value;
 
 use std::sync::Arc;
@@ -14,15 +16,18 @@ use tower_http::trace::{self, TraceLayer};
 
 use super::openapi::generate;
 
-pub fn routes(settings: Arc<Settings>) -> IntoMakeService<Router> {
+pub async fn routes(config: Arc<Config>) -> anyhow::Result<IntoMakeService<Router>> {
     let mut openapi = generate();
+    let rmq_pool = create_rmq_pool(&config.rabbitmq.url.clone()).unwrap();
 
-    ApiRouter::new()
+    let ms_calendar_client = Arc::new(RmqRpcClient::new(rmq_pool).await?);
+
+    Ok(ApiRouter::new()
         .nest(
-            &settings.url.path,
+            &config.url.path,
             ApiRouter::new()
-                .with_state(settings.clone())
-                .merge(super::openapi::routes(settings.clone()))
+                .with_state(config.clone())
+                .merge(super::openapi::routes(config.clone()))
                 .merge(super::health::routes()),
         )
         .fallback(fallback_handler)
@@ -34,7 +39,8 @@ pub fn routes(settings: Arc<Settings>) -> IntoMakeService<Router> {
             openapi.default_response::<Json<Value>>()
         })
         .layer(Extension(openapi))
-        .into_make_service()
+        .layer(Extension(ms_calendar_client))
+        .into_make_service())
 }
 
 pub(super) async fn fallback_handler(

@@ -1,2 +1,2 @@
 [rabbitmq]
-url = "/"
+url = "amqp://localhost:5672"

@@ -10,3 +10,17 @@ rust-version.workspace = true
 tracing-subscriber = { version = "0.3.17", features = ["env-filter"] }
 tracing = "0.1.37"
 config = { version = "0.13.3", features = ["toml"] }
+anyhow.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+serde.workspace = true
+lapin.workspace = true
+tokio-executor-trait = "2.1.1"
+tokio-reactor-trait = "1.1.0"
+deadpool = { version = "0.9.5", features = ["rt_tokio_1"] }
+deadpool-lapin = "0.10.0"
+futures = "0.3.28"
+uuid = { version = "1.3.3", features = ["v4", "fast-rng"] }
+async-trait = "0.1.68"
+strum = { version = "0.24.1", features = ["strum_macros"] }
+strum_macros = "0.24.3"

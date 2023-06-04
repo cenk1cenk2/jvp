@@ -6,3 +6,6 @@ path = "/"
 [openapi]
 url = "/internal/docs"
 json = "/internal/docs/openapi.json"
+
+[rabbitmq]
+url = "amqp://localhost:5672"

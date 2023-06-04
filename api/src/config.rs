@@ -16,14 +16,21 @@ pub(crate) struct OpenApi {
 
 #[derive(Debug, Deserialize, Clone)]
 #[allow(unused)]
-pub struct Settings {
+pub(crate) struct RabbitMQ {
+    pub(crate) url: String,
+}
+
+#[derive(Debug, Deserialize, Clone)]
+#[allow(unused)]
+pub struct Config {
     pub(crate) port: u16,
 
     pub(crate) url: Url,
     pub(crate) openapi: OpenApi,
+    pub(crate) rabbitmq: RabbitMQ,
 }
 
-impl Settings {
+impl Config {
     pub fn new() -> Result<Self, config::ConfigError> {
         config::build_config()?.try_deserialize()
     }

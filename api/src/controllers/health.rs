@@ -1,8 +1,12 @@
+use std::sync::Arc;
+
 use aide::axum::routing::get_with;
 use aide::axum::ApiRouter;
 
-use axum::Json;
+use axum::{Extension, Json};
 
+use crate::prelude::*;
+use common::rmq::{client::RmqRpcClient, error::RmqError};
 use serde_json::{json, Value};
 
 pub fn routes() -> ApiRouter {
@@ -21,6 +25,13 @@ pub fn routes() -> ApiRouter {
     )
 }
 
-async fn handler() -> Json<Value> {
-    Json(json!({ "test": true }))
+async fn handler(
+    Extension(ms_calendar_client): Extension<Arc<RmqRpcClient>>,
+) -> Result<Json<Value>, ()> {
+    info!(
+        "{:?}",
+        std::str::from_utf8(&ms_calendar_client.send().await.unwrap())
+    );
+
+    Ok(Json(json!({ "test": true })))
 }

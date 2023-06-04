@@ -8,11 +8,12 @@ default-run = "jvp-api"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-common = { workspace = true }
+common.workspace = true
 
-thiserror = { workspace = true }
-tokio = { workspace = true }
-serde = { workspace = true }
+anyhow.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+serde.workspace = true
 axum = { version = "0.6.3", features = ["headers"] }
 hyper = { version = "0.14.23", features = ["full"] }
 tower = { version = "0.4.13", features = ["full"] }

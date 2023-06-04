@@ -6,12 +6,12 @@ use axum::{routing::get, Extension, Json, Router};
 
 use super::swagger::SwaggerUi;
 
-pub fn routes(settings: Arc<Settings>) -> Router {
-    let json = settings.openapi.json.clone();
+pub fn routes(config: Arc<Config>) -> Router {
+    let json = config.openapi.json.clone();
 
     Router::new()
         .route(&json, get(serve))
-        .nest(&settings.openapi.url, SwaggerUi::setup(json))
+        .nest(&config.openapi.url, SwaggerUi::setup(json))
 }
 
 async fn serve(Extension(openapi): Extension<OpenApi>) -> Json<OpenApi> {
@@ -26,7 +26,6 @@ pub fn generate() -> OpenApi {
     aide::gen::extract_schemas(true);
 
     OpenApi {
-        openapi: "3.0.0",
         info: Info {
             title: "Je Vous Piste".to_string(),
             description: Some(

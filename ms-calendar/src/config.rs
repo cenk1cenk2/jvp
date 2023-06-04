@@ -1,7 +1,6 @@
 use crate::prelude::*;
 use serde::Deserialize;
 
-
 #[derive(Debug, Deserialize, Clone)]
 #[allow(unused)]
 pub(crate) struct RabbitMQ {
@@ -10,11 +9,11 @@ pub(crate) struct RabbitMQ {
 
 #[derive(Debug, Deserialize, Clone)]
 #[allow(unused)]
-pub struct Settings {
+pub struct Config {
     pub(crate) rabbitmq: RabbitMQ,
 }
 
-impl Settings {
+impl Config {
     pub fn new() -> Result<Self, config::ConfigError> {
         config::build_config()?.try_deserialize()
     }
